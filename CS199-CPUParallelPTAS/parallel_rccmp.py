@@ -87,7 +87,11 @@ def superimpose_pair(mol1, mol2):
 
     E0 = np.sum( np.sum(csel1 * csel1,axis=0),axis=0) + np.sum( np.sum(csel2 * csel2,axis=0),axis=0)
 
+    cpu_start = time.time()
     V, S, Wt = np.linalg.svd( np.dot( np.transpose(csel2), csel1))
+    cpu_end = time.time()
+    cpu_exec = cpu_end - cpu_start
+    print("CPU SVD: ", cpu_exec)
 
     reflect = float(str(float(np.linalg.det(V) * np.linalg.det(Wt))))
 
