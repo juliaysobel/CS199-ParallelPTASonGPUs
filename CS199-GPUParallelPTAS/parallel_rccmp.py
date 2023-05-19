@@ -103,8 +103,8 @@ def superimpose_pair(mol1, mol2):
     # [IN PROGRESS] added: using batch operations to execute svd in parallel
     # reshape input matrices
     batch_size = 1
-    csel2_batched = csel2_gpu.reshape((batch_size,) + csel2_gpu.shape)
-    csel1_batched = csel1_gpu.reshape((batch_size,) + csel1_gpu.shape)
+    csel2_batched = csel2_gpu.reshape((batch_size,) + csel2_gpu.shape[1:])
+    csel1_batched = csel1_gpu.reshape((batch_size,) + csel1_gpu.shape[1:])
     
     """
     # [WORKING] added: perform the matrix multiplication and compute the SVD on the GPU
