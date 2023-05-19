@@ -97,7 +97,7 @@ def superimpose_pair(mol1, mol2):
     csel2_gpu = cp.asarray(csel2)
 
     # added: perform the matrix multiplication on the GPU
-    c_gpu = cp.dot(csel2_gpu, csel1_gpu.T)
+    c_gpu = cp.dot(csel2_gpu.T, csel1_gpu)
 
     # added: compute the SVD on the GPU
     V_gpu, S_gpu, Wt_gpu = cp.linalg.svd(c_gpu)
