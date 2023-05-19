@@ -104,9 +104,9 @@ def superimpose_pair(mol1, mol2):
 
     # return to CPU
     # added: transfer the results back to the CPU
-    V = cp.asnumpy(U_gpu)
+    V = cp.asnumpy(V_gpu)
     S = cp.asnumpy(S_gpu)
-    Wt = cp.asnumpy(Vt_gpu)
+    Wt = cp.asnumpy(Wt_gpu)
 
     reflect = float(str(float(np.linalg.det(V) * np.linalg.det(Wt))))
 
