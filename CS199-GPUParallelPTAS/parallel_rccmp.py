@@ -119,7 +119,7 @@ def superimpose_pair(mol1, mol2):
     Wt = cp.asnumpy(Wt_gpu)
     gpu_to_cpu_end = time.time()
     gpu_to_cpu_exec = gpu_to_cpu_end - gpu_to_cpu_start
-    print("CPU to GPU: ", gpu_to_cpu_exec)
+    print("GPU to CPU: ", gpu_to_cpu_exec)
 
     reflect = float(str(float(np.linalg.det(V) * np.linalg.det(Wt))))
 
