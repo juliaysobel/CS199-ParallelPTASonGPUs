@@ -99,14 +99,26 @@ def superimpose_pair(mol1, mol2):
     cpu_to_gpu_end = time.time()
     cpu_to_gpu_exec = cpu_to_gpu_end - cpu_to_gpu_start
     print("CPU to GPU: ", cpu_to_gpu_exec)
-    
-    # [WORKING] added: perform the matrix multiplication and compute the SVD on the GPU
+
+    # [IN PROGRESS] added: using batch operations to execute svd in parallel
+    # reshape input matrices
+    batch_size = 1
+    csel2_batched = csel2_gpu.reshape((batch_size,) + csel2_gpu.shape[1:])
+    csel1_batched = csel1_gpu.reshape((batch_size,) + csel1_gpu.shape[1:])
+
+    # [IN PROGRESS] alt matmul and svd for batch operations
     gpu_start = time.time()
-    c_gpu = cp.dot(csel2_gpu.T, csel1_gpu)
-    V_gpu, S_gpu, Wt_gpu = cp.linalg.svd(c_gpu)
+    c_gpu_batched = cp.dot(csel2_batched.T, csel1_batched)
+    V_batched, S_batched, Wt_batched = cp.linalg.svd(c_gpu_batched)
     gpu_end = time.time()
     gpu_exec = gpu_end - gpu_start
     print("GPU SVD: ", gpu_exec)
+
+    # [IN PROGRESS] retrieve the results of batched operations
+    # retrieve first for batch size = 1
+    V_gpu = V_batched[0]
+    S_gpu = S_batched[0]
+    Wt_gpu = Wt_batched[0]
 
     # return to CPU
     # [WORKING] added: transfer the results back to the CPU
