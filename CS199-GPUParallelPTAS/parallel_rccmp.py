@@ -89,30 +89,49 @@ def superimpose_pair(mol1, mol2):
     E0 = np.sum( np.sum(csel1 * csel1,axis=0),axis=0) + np.sum( np.sum(csel2 * csel2,axis=0),axis=0)
 
     # pass to GPU
-    # cpu numpy version:
-    # V, S, Wt = np.linalg.svd( np.dot( np.transpose(csel2), csel1))
+    # cpu numpy version:V, S, Wt = np.linalg.svd( np.dot( np.transpose(csel2), csel1))
 
-    # added: gpu data transfer and matmul+svd benchmarking
-    # added: transfer data to the GPU
+    # [WORKING] added: gpu data transfer and matmul+svd benchmarking
+    # [WORKING] added: transfer data to the GPU
     cpu_to_gpu_start = time.time()
     csel1_gpu = cp.asarray(csel1)
     csel2_gpu = cp.asarray(csel2)
     cpu_to_gpu_end = time.time()
     cpu_to_gpu_exec = cpu_to_gpu_end - cpu_to_gpu_start
     print("CPU to GPU: ", cpu_to_gpu_exec)
+
+    # [IN PROGRESS] added: using batch operations to execute svd in parallel
+    # reshape input matrices
+    batch_size = 1
+    csel2_batched = csel2_gpu.reshape((batch_size,) + csel2_gpu.shape)
+    csel1_batched = csel1_gpu.reshape((batch_size,) + csel1_gpu.shape)
     
-    # added: perform the matrix multiplication on the GPU
+    """
+    # [WORKING] added: perform the matrix multiplication and compute the SVD on the GPU
     gpu_start = time.time()
     c_gpu = cp.dot(csel2_gpu.T, csel1_gpu)
-
-    # added: compute the SVD on the GPU
     V_gpu, S_gpu, Wt_gpu = cp.linalg.svd(c_gpu)
     gpu_end = time.time()
     gpu_exec = gpu_end - gpu_start
     print("GPU SVD: ", gpu_exec)
+    """
+
+    # [IN PROGRESS] alt matmul and svd for batch operations
+    gpu_start = time.time()
+    c_gpu_batched = cp.dot(csel2_batched.T, csel1_batched)
+    V_batched, S_batched, Wt_batched = cp.linalg.svd(c_gpu_batched)
+    gpu_end = time.time()
+    gpu_exec = gpu_end - gpu_start
+    print("GPU SVD: ", gpu_exec)
+
+    # [IN PROGRESS] retrieve the results of batched operations
+    # retrieve first for batch size = 1
+    V_gpu = V_batched[0]
+    S_gpu = S_batched[0]
+    Wt_gpu = Wt_batched[0]
 
     # return to CPU
-    # added: transfer the results back to the CPU
+    # [WORKING] added: transfer the results back to the CPU
     gpu_to_cpu_start = time.time()
     V = cp.asnumpy(V_gpu)
     S = cp.asnumpy(S_gpu)
