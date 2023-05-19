@@ -100,13 +100,13 @@ def superimpose_pair(mol1, mol2):
     c_gpu = cp.dot(csel2_gpu, csel1_gpu.T)
 
     # added: compute the SVD on the GPU
-    U_gpu, S_gpu, Vt_gpu = cp.linalg.svd(c_gpu)
+    V_gpu, S_gpu, Wt_gpu = cp.linalg.svd(c_gpu)
 
     # return to CPU
     # added: transfer the results back to the CPU
-    U = cp.asnumpy(U_gpu)
+    V = cp.asnumpy(U_gpu)
     S = cp.asnumpy(S_gpu)
-    V = cp.asnumpy(Vt_gpu)
+    Wt = cp.asnumpy(Vt_gpu)
 
     reflect = float(str(float(np.linalg.det(V) * np.linalg.det(Wt))))
 
