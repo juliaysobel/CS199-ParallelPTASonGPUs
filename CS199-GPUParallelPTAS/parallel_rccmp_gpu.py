@@ -243,7 +243,7 @@ if __name__ == "__main__":
     transfertime = 0
     svdtime = 0
     
-    BENCHMARK_LENGTH = 6 # length of motif, number of residues
+    BENCHMARK_LENGTH = 1 # length of motif, number of residues
     r = 2 # sample size
     b = 2.5 # max ball size
     d = 0
