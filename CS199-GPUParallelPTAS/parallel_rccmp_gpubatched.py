@@ -107,21 +107,30 @@ def superimpose_pair(mol1, mol2):
     # [IN PROGRESS] added: using batch operations to execute svd in parallel
     # reshape input matrices
     batch_size = min(10,L)
-    csel2_batched = csel2_gpu.reshape((batch_size,) + csel2_gpu.shape[1:])
-    csel1_batched = csel1_gpu.reshape((batch_size,) + csel1_gpu.shape[1:])
+    c_gpu_batched = cp.empty((batch_size, csel2_gpu.shape[1], csel1_gpu.shape[1]))
+    V_batched = cp.empty((batch_size, csel2_gpu.shape[1], csel2_gpu.shape[1]))
+    S_batched = cp.empty((batch_size, csel2_gpu.shape[1]))
+    Wt_batched = cp.empty((batch_size, csel1_gpu.shape[1], csel1_gpu.shape[1]))
 
     # [IN PROGRESS] alt matmul and svd for batch operations
     gpu_start = time.time()
-    c_gpu_batched = cp.dot(csel2_batched.transpose(), csel1_batched)
-    V_batched, S_batched, Wt_batched = cp.linalg.svd(c_gpu_batched)
+    
+    for i in range(0, L, batch_size):
+        csel2_batched = csel2_gpu[i:i+batch_size]
+        csel1_batched = csel1_gpu[i:i+batch_size]
+
+        c_gpu_batched[:csel2_batched.shape[0]] = cp.dot(csel2_batched.T, csel1_batched)
+
+        V_batched[:csel2_batched.shape[0]], S_batched[:csel2_batched.shape[0]], Wt_batched[:csel2_batched.shape[0]] = cp.linalg.svd(c_gpu_batched[:csel2_batched.shape[0]])
+
     gpu_end = time.time()
     gpu_exec = gpu_end - gpu_start
     svdtime += gpu_exec
 
     # [IN PROGRESS] retrieve the results of batched operations
-    V_gpu = V_batched[0]
-    S_gpu = S_batched[0]
-    Wt_gpu = Wt_batched[0]
+    V_gpu = V_batched[:,0,:]
+    S_gpu = S_batched[:,0]
+    Wt_gpu = Wt_batched[:,0,:]
 
     # return to CPU
     # [WORKING] added: transfer the results back to the CPU
@@ -140,7 +149,7 @@ def superimpose_pair(mol1, mol2):
         V[:,-1] = -V[:,-1]
 
     # rmsd computation
-    RMSD = E0 - (2.0 * sum(S))
+    RMSD = E0 - (2.0 * np.sum(S))
     RMSD = np.sqrt(abs(RMSD / L))
 
     U = np.dot(V, Wt)
