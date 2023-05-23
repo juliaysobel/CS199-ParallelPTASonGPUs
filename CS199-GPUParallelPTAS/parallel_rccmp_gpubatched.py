@@ -106,7 +106,7 @@ def superimpose_pair(mol1, mol2):
 
     # [IN PROGRESS] added: using batch operations to execute svd in parallel
     # reshape input matrices
-    batch_size = 10
+    batch_size = min(10,L)
     csel2_batched = csel2_gpu.reshape((batch_size,) + csel2_gpu.shape[1:])
     csel1_batched = csel1_gpu.reshape((batch_size,) + csel1_gpu.shape[1:])
 
