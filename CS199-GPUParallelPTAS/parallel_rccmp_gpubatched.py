@@ -13,6 +13,8 @@ import cupy as cp # added
 # - C number of residues
 # - r samples
 
+global transfertime, svdtime 
+
 # coincides proteins with their centroid
 def center(proteins):
     centered = []
@@ -72,6 +74,8 @@ def convert(lvs):
 
 # from pepsquad
 def superimpose_pair(mol1, mol2):
+    global transfertime, svdtime
+
     sel1 = np.array(mol1)
     sel2 = np.array(mol2)
     
@@ -98,11 +102,11 @@ def superimpose_pair(mol1, mol2):
     csel2_gpu = cp.asarray(csel2)
     cpu_to_gpu_end = time.time()
     cpu_to_gpu_exec = cpu_to_gpu_end - cpu_to_gpu_start
-    print("CPU to GPU: ", cpu_to_gpu_exec)
+    transfertime += cpu_to_gpu_exec
 
     # [IN PROGRESS] added: using batch operations to execute svd in parallel
     # reshape input matrices
-    batch_size = 1
+    batch_size = 10
     csel2_batched = csel2_gpu.reshape((batch_size,) + csel2_gpu.shape[1:])
     csel1_batched = csel1_gpu.reshape((batch_size,) + csel1_gpu.shape[1:])
 
@@ -112,7 +116,7 @@ def superimpose_pair(mol1, mol2):
     V_batched, S_batched, Wt_batched = cp.linalg.svd(c_gpu_batched)
     gpu_end = time.time()
     gpu_exec = gpu_end - gpu_start
-    print("GPU SVD: ", gpu_exec)
+    svdtime += gpu_exec
 
     # [IN PROGRESS] retrieve the results of batched operations
     # retrieve first for batch size = 1
@@ -128,7 +132,7 @@ def superimpose_pair(mol1, mol2):
     Wt = cp.asnumpy(Wt_gpu)
     gpu_to_cpu_end = time.time()
     gpu_to_cpu_exec = gpu_to_cpu_end - gpu_to_cpu_start
-    print("GPU to CPU: ", gpu_to_cpu_exec)
+    transfertime += gpu_to_cpu_exec
 
     reflect = float(str(float(np.linalg.det(V) * np.linalg.det(Wt))))
 
@@ -255,6 +259,8 @@ if __name__ == "__main__":
     b = 2.5 # max ball size
     d = 0
     min_trmsd = sys.maxsize
+    transfertime = 0
+    svdtime = 0
 
     # Get all protein structs
     # Change path to tets different dataset
@@ -301,3 +307,5 @@ if __name__ == "__main__":
 
     toc = time.time()
     print("Program done in {:.4f} seconds".format(toc-tic))
+    print("Total transfer time {:.4f} seconds".format(transfertime))
+    print("Total SVD time {:.4f} seconds".format(svdtime))
