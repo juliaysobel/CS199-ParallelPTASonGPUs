@@ -119,9 +119,9 @@ def superimpose_pair(mol1, mol2):
     svdtime += gpu_exec
 
     # [IN PROGRESS] retrieve the results of batched operations
-    V_gpu = V_batched[:,0]
-    S_gpu = S_batched[:,0]
-    Wt_gpu = Wt_batched[:,0]
+    V_gpu = V_batched[0]
+    S_gpu = S_batched[0]
+    Wt_gpu = Wt_batched[0]
 
     # return to CPU
     # [WORKING] added: transfer the results back to the CPU
