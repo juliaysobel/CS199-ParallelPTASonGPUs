@@ -112,7 +112,7 @@ def superimpose_pair(mol1, mol2):
 
     # [IN PROGRESS] alt matmul and svd for batch operations
     gpu_start = time.time()
-    c_gpu_batched = cp.dot(csel2_batched.T, csel1_batched)
+    c_gpu_batched = cp.dot(csel2_batched.transpose(), csel1_batched)
     V_batched, S_batched, Wt_batched = cp.linalg.svd(c_gpu_batched)
     gpu_end = time.time()
     gpu_exec = gpu_end - gpu_start
