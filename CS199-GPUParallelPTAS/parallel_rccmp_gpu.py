@@ -98,7 +98,7 @@ def superimpose_pair(mol1, mol2):
     csel2_gpu = cp.asarray(csel2)
     cpu_to_gpu_end = time.time()
     cpu_to_gpu_exec = cpu_to_gpu_end - cpu_to_gpu_start
-    print("CPU to GPU: ", cpu_to_gpu_exec)
+    #print("CPU to GPU: ", cpu_to_gpu_exec)
     
     # [WORKING] added: perform the matrix multiplication and compute the SVD on the GPU
     gpu_start = time.time()
@@ -116,7 +116,7 @@ def superimpose_pair(mol1, mol2):
     Wt = cp.asnumpy(Wt_gpu)
     gpu_to_cpu_end = time.time()
     gpu_to_cpu_exec = gpu_to_cpu_end - gpu_to_cpu_start
-    print("GPU to CPU: ", gpu_to_cpu_exec)
+    #print("GPU to CPU: ", gpu_to_cpu_exec)
 
     reflect = float(str(float(np.linalg.det(V) * np.linalg.det(Wt))))
 
