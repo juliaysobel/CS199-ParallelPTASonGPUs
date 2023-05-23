@@ -12,6 +12,8 @@ import time
 # - C number of residues
 # - r samples
 
+global svdtime 
+
 # coincides proteins with their centroid
 def center(proteins):
     centered = []
@@ -71,6 +73,8 @@ def convert(lvs):
 
 # from pepsquad
 def superimpose_pair(mol1, mol2):
+    global svdtime
+
     sel1 = np.array(mol1)
     sel2 = np.array(mol2)
     
@@ -91,7 +95,7 @@ def superimpose_pair(mol1, mol2):
     V, S, Wt = np.linalg.svd( np.dot( np.transpose(csel2), csel1))
     cpu_end = time.time()
     cpu_exec = cpu_end - cpu_start
-    #print("CPU SVD: ", cpu_exec)
+    svdtime += cpu_exec
 
     reflect = float(str(float(np.linalg.det(V) * np.linalg.det(Wt))))
 
@@ -217,6 +221,7 @@ if __name__ == "__main__":
     b = 2.5 # max ball size
     d = 0
     min_trmsd = sys.maxsize
+    svdtime = 0
 
     # Get all protein structs
     structs = get_structures("/datasets","/pep_conantokin/")
@@ -262,3 +267,4 @@ if __name__ == "__main__":
 
     toc = time.time()
     print("Program done in {:.4f} seconds".format(toc-tic))
+    print("Total SVD time {:.4f} seconds".format(svdtime))
