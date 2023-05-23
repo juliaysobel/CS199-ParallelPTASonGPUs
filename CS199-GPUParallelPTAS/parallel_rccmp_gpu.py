@@ -13,8 +13,7 @@ import cupy as cp # added
 # - C number of residues
 # - r samples
 
-transfertime = 0
-svdtime = 0
+global transfertime, svdtime 
 
 # coincides proteins with their centroid
 def center(proteins):
@@ -75,6 +74,8 @@ def convert(lvs):
 
 # from pepsquad
 def superimpose_pair(mol1, mol2):
+    global transfertime, svdtime
+    
     sel1 = np.array(mol1)
     sel2 = np.array(mol2)
     
@@ -249,6 +250,8 @@ if __name__ == "__main__":
     b = 2.5 # max ball size
     d = 0
     min_trmsd = sys.maxsize
+    transfertime = 0
+    svdtime = 0
 
     # Get all protein structs
     # Change path to tets different dataset
