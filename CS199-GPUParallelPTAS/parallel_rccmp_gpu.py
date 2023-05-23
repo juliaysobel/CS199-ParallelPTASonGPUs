@@ -13,6 +13,9 @@ import cupy as cp # added
 # - C number of residues
 # - r samples
 
+transfertime = 0
+svdtime = 0
+
 # coincides proteins with their centroid
 def center(proteins):
     centered = []
@@ -240,8 +243,6 @@ def impose_step(data):
 if __name__ == "__main__":
     
     tic = time.time()
-    transfertime = 0
-    svdtime = 0
     
     BENCHMARK_LENGTH = 1 # length of motif, number of residues
     r = 2 # sample size
