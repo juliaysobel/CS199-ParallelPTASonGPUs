@@ -98,6 +98,7 @@ def superimpose_pair(mol1, mol2):
     csel2_gpu = cp.asarray(csel2)
     cpu_to_gpu_end = time.time()
     cpu_to_gpu_exec = cpu_to_gpu_end - cpu_to_gpu_start
+    transfertime += cpu_to_gpu_exec
     #print("CPU to GPU: ", cpu_to_gpu_exec)
     
     # [WORKING] added: perform the matrix multiplication and compute the SVD on the GPU
@@ -106,6 +107,7 @@ def superimpose_pair(mol1, mol2):
     V_gpu, S_gpu, Wt_gpu = cp.linalg.svd(c_gpu)
     gpu_end = time.time()
     gpu_exec = gpu_end - gpu_start
+    svdtime += gpu_exec
     #print("GPU SVD: ", gpu_exec)
 
     # return to CPU
@@ -116,6 +118,7 @@ def superimpose_pair(mol1, mol2):
     Wt = cp.asnumpy(Wt_gpu)
     gpu_to_cpu_end = time.time()
     gpu_to_cpu_exec = gpu_to_cpu_end - gpu_to_cpu_start
+    transfertime += gpu_to_cpu_exec
     #print("GPU to CPU: ", gpu_to_cpu_exec)
 
     reflect = float(str(float(np.linalg.det(V) * np.linalg.det(Wt))))
@@ -237,6 +240,8 @@ def impose_step(data):
 if __name__ == "__main__":
     
     tic = time.time()
+    transfertime = 0
+    svdtime = 0
     
     BENCHMARK_LENGTH = 6 # length of motif, number of residues
     r = 2 # sample size
@@ -289,3 +294,5 @@ if __name__ == "__main__":
 
     toc = time.time()
     print("Program done in {:.4f} seconds".format(toc-tic))
+    print("Total transfer time {:.4f} seconds".format(transfertime))
+    print("Total SVD time {:.4f} seconds".format(svdtime))
