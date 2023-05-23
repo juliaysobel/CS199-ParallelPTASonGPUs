@@ -106,7 +106,7 @@ def superimpose_pair(mol1, mol2):
     V_gpu, S_gpu, Wt_gpu = cp.linalg.svd(c_gpu)
     gpu_end = time.time()
     gpu_exec = gpu_end - gpu_start
-    print("GPU SVD: ", gpu_exec)
+    #print("GPU SVD: ", gpu_exec)
 
     # return to CPU
     # [WORKING] added: transfer the results back to the CPU
