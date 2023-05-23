@@ -75,7 +75,7 @@ def convert(lvs):
 # from pepsquad
 def superimpose_pair(mol1, mol2):
     global transfertime, svdtime
-    
+
     sel1 = np.array(mol1)
     sel2 = np.array(mol2)
     
@@ -103,7 +103,6 @@ def superimpose_pair(mol1, mol2):
     cpu_to_gpu_end = time.time()
     cpu_to_gpu_exec = cpu_to_gpu_end - cpu_to_gpu_start
     transfertime += cpu_to_gpu_exec
-    #print("CPU to GPU: ", cpu_to_gpu_exec)
     
     # [WORKING] added: perform the matrix multiplication and compute the SVD on the GPU
     gpu_start = time.time()
@@ -112,7 +111,6 @@ def superimpose_pair(mol1, mol2):
     gpu_end = time.time()
     gpu_exec = gpu_end - gpu_start
     svdtime += gpu_exec
-    #print("GPU SVD: ", gpu_exec)
 
     # return to CPU
     # [WORKING] added: transfer the results back to the CPU
@@ -123,7 +121,6 @@ def superimpose_pair(mol1, mol2):
     gpu_to_cpu_end = time.time()
     gpu_to_cpu_exec = gpu_to_cpu_end - gpu_to_cpu_start
     transfertime += gpu_to_cpu_exec
-    #print("GPU to CPU: ", gpu_to_cpu_exec)
 
     reflect = float(str(float(np.linalg.det(V) * np.linalg.det(Wt))))
 
@@ -245,7 +242,7 @@ if __name__ == "__main__":
     
     tic = time.time()
     
-    BENCHMARK_LENGTH = 1 # length of motif, number of residues
+    BENCHMARK_LENGTH = 2 # length of motif, number of residues
     r = 2 # sample size
     b = 2.5 # max ball size
     d = 0
