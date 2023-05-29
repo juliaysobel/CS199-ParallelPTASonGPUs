@@ -174,12 +174,13 @@ def get_feasible(consensus,TP):
 
 # superimposition process for parallelization
 def impose_step(data):
-    sample_ranges = data[0]
-    centered_structs = data[1]
-    min_trmsd = data[2]
-    length = data[3]
-    b = data[4]
-    ID = data[5]
+    sample_ranges = data[0] #sample_ranges[i:i+div]
+    centered_structs = data[1] #centered_structs
+    min_trmsd = data[2] #min_trmsd
+    length = data[3] #BENCHMARK_LENGTH
+    b = data[4] #b
+    ID = data[5] # str(int(i/div))
+    # for i in range(0,len(sample_ranges),div)
 
     count = 0
     min_feasible = None
@@ -216,7 +217,7 @@ if __name__ == "__main__":
     
     tic = time.time()
     
-    BENCHMARK_LENGTH = 3 # length of motif, number of residues
+    BENCHMARK_LENGTH = 3
     r = 2 # sample size
     b = 2.5 # max ball size
     d = 0
@@ -224,7 +225,7 @@ if __name__ == "__main__":
     svdtime = 0
 
     # Get all protein structs
-    structs = get_structures("/datasets","/pep_conantokin_1/")
+    structs = get_structures("/datasets","/pep_conantokin/")
 
     # (1) Fix P_1, translate other proteins to make centroids coincide
     fixed_struct = structs[0]
