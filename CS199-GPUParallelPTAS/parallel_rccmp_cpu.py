@@ -189,7 +189,8 @@ def impose_step(data):
     min_ball_size = None
     min_sample = None
     
-    for sample_range in tqdm(sample_ranges, desc = "superimposing ID: " + ID):
+    #for sample_range in tqdm(sample_ranges, desc = "superimposing ID: " + ID):
+    for sample_range in sample_ranges:
         # extract the l-length motifs
         motifs = extract(centered_structs, sample_range, length)
 
