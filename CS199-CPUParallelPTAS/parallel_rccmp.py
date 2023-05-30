@@ -213,7 +213,7 @@ if __name__ == "__main__":
     tic = time.time()
     
     BENCHMARK_LENGTH = 3
-    r = 2
+    r = 3
     b = 2.5
     d = 0
     min_trmsd = sys.maxsize
