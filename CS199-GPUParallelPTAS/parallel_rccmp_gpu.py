@@ -252,7 +252,7 @@ if __name__ == "__main__":
 
     # Get all protein structs
     # Change path to tets different dataset
-    structs = get_structures("/datasets","/pep_conantokin/")
+    structs = get_structures("/datasets","/pep_conantokin_1/")
 
     # (1) Fix P_1, translate other proteins to make centroids coincide
     fixed_struct = structs[0]
@@ -266,7 +266,7 @@ if __name__ == "__main__":
     print(len(sample_ranges))
 
     # parallelization step
-    num_processors = 60
+    num_processors = 1
     div = int(len(sample_ranges)/num_processors)
     pool = multiprocessing.Pool(num_processors)
     results = pool.map(impose_step,[[sample_ranges[i:i+div],centered_structs,min_trmsd,BENCHMARK_LENGTH,b,str(int(i/div))] for i in range(0,len(sample_ranges),div)])
