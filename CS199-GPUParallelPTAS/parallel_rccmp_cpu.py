@@ -220,7 +220,7 @@ if __name__ == "__main__":
     
     BENCHMARK_LENGTH = 15
     r = 2 # sample size
-    b = 40 # max ball size
+    b = 8 # max ball size
     d = 0
     min_trmsd = sys.maxsize
     svdtime = 0
