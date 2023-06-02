@@ -218,7 +218,7 @@ if __name__ == "__main__":
     
     tic = time.time()
     
-    BENCHMARK_LENGTH = 15
+    BENCHMARK_LENGTH = 13
     r = 2 # sample size
     b = 20 # max ball size
     d = 0
