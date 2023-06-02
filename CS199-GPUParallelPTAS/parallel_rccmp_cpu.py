@@ -151,6 +151,7 @@ def get_min_aln(consensus,tp):
     min_rmsd = sys.maxsize
     cmol = None
     j = 0
+    min_j = j # initial
     for mol in [tp[i:i+l] for i in range(n-l)]:
         j +=1
         (rmsd, mol1, mol2, U) = superimpose_pair(consensus, mol)
