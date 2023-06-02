@@ -243,7 +243,7 @@ if __name__ == "__main__":
     tic = time.time()
     
     BENCHMARK_LENGTH = 3 # length of motif, number of residues
-    r = 5 # sample size
+    r = 2 # sample size
     b = 2.5 # max ball size
     d = 0
     min_trmsd = sys.maxsize
@@ -266,7 +266,7 @@ if __name__ == "__main__":
     print(len(sample_ranges))
 
     # parallelization step
-    num_processors = 19
+    num_processors = 1
     div = int(len(sample_ranges)/num_processors)
     pool = multiprocessing.Pool(num_processors)
     results = pool.map(impose_step,[[sample_ranges[i:i+div],centered_structs,min_trmsd,BENCHMARK_LENGTH,b,str(int(i/div))] for i in range(0,len(sample_ranges),div)])
