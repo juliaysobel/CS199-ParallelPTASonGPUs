@@ -225,6 +225,7 @@ if __name__ == "__main__":
     d = 0
     min_trmsd = sys.maxsize
     svdtime = []
+    molslength = []
 
     # Get all protein structs
     structs = get_structures("/datasets","/pep_conantokin/")
