@@ -12,7 +12,7 @@ import time
 # - C number of residues
 # - r samples
 
-global svdtime
+global svdtime, molslength
 
 # coincides proteins with their centroid
 def center(proteins):
@@ -89,6 +89,7 @@ def superimpose_pair(mol1, mol2):
     csel1 = convert(sel1)
     csel2 = convert(sel2)
 
+    molslength.append((len(csel1),len(csel2)))
     E0 = np.sum( np.sum(csel1 * csel1,axis=0),axis=0) + np.sum( np.sum(csel2 * csel2,axis=0),axis=0)
 
     cpu_start = time.time()
