@@ -13,7 +13,7 @@ import cupy as cp # added
 # - C number of residues
 # - r samples
 
-global transfertime, svdtime 
+global transfertime, svdtime, molslength
 
 # coincides proteins with their centroid
 def center(proteins):
@@ -74,7 +74,7 @@ def convert(lvs):
 
 # from pepsquad
 def superimpose_pair(mol1, mol2):
-    global transfertime, svdtime
+    global transfertime, svdtime, molslength
 
     sel1 = np.array(mol1)
     sel2 = np.array(mol2)
@@ -102,7 +102,8 @@ def superimpose_pair(mol1, mol2):
     csel2_gpu = cp.asarray(csel2)
     cpu_to_gpu_end = time.time()
     cpu_to_gpu_exec = cpu_to_gpu_end - cpu_to_gpu_start
-    transfertime += cpu_to_gpu_exec
+    transfertime.append(cpu_to_gpu_exec)
+    molslength.append((len(csel1_gpu),len(csel2_gpu)))
     
     # [WORKING] added: perform the matrix multiplication and compute the SVD on the GPU
     gpu_start = time.time()
@@ -110,7 +111,7 @@ def superimpose_pair(mol1, mol2):
     V_gpu, S_gpu, Wt_gpu = cp.linalg.svd(c_gpu)
     gpu_end = time.time()
     gpu_exec = gpu_end - gpu_start
-    svdtime += gpu_exec
+    svdtime.append(gpu_exec)
 
     # return to CPU
     # [WORKING] added: transfer the results back to the CPU
@@ -247,8 +248,9 @@ if __name__ == "__main__":
     b = 2.5 # max ball size
     d = 0
     min_trmsd = sys.maxsize
-    transfertime = 0
-    svdtime = 0
+    transfertime = []
+    svdtime = []
+    molslength = []
 
     # Get all protein structs
     # Change path to tets different dataset
@@ -295,5 +297,8 @@ if __name__ == "__main__":
 
     toc = time.time()
     print("Program done in {:.4f} seconds".format(toc-tic))
-    print("Total transfer time {:.4f} seconds".format(transfertime))
-    print("Total SVD time {:.4f} seconds".format(svdtime))
+    #print("Total transfer time {:.4f} seconds".format(transfertime))
+    #print("Total SVD time {:.4f} seconds".format(svdtime))
+    print(svdtime)
+    print(transfertime)
+    print(molslength)

@@ -271,5 +271,5 @@ if __name__ == "__main__":
 
     toc = time.time()
     print("Program done in {:.4f} seconds".format(toc-tic))
-    #print("Total SVD time {:.4f} seconds".format(svdtime))
     print(svdtime)
+    print(molslength)
