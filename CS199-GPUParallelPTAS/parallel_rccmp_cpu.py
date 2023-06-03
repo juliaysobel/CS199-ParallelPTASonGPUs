@@ -73,7 +73,7 @@ def convert(lvs):
 
 # from pepsquad
 def superimpose_pair(mol1, mol2):
-    global svdtime
+    global svdtime, molslength
 
     sel1 = np.array(mol1)
     sel2 = np.array(mol2)
@@ -130,7 +130,6 @@ def pairwise_score(mols): # pairwise alignment
 
 # from pepsquad
 def superimpose_samples(mols): # min star alignment: head: all
-    global svdtime
     r = len(mols)
     min_TRMSD = 999.0
     min_cmol = None
