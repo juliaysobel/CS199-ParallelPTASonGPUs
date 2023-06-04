@@ -228,7 +228,7 @@ if __name__ == "__main__":
     molslength = []
 
     # Get all protein structs
-    structs = get_structures("/datasets","/pep_conantokin_1/")
+    structs = get_structures("/datasets","/pep_conantokin/")
 
     # (1) Fix P_1, translate other proteins to make centroids coincide
     fixed_struct = structs[0]
