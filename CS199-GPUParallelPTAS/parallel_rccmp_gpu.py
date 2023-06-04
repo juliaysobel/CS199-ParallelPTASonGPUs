@@ -254,7 +254,7 @@ if __name__ == "__main__":
 
     # Get all protein structs
     # Change path to tets different dataset
-    structs = get_structures("/datasets","/pep_conantokin/")
+    structs = get_structures("/datasets","/pep_conantokin_1/")
 
     # (1) Fix P_1, translate other proteins to make centroids coincide
     fixed_struct = structs[0]
