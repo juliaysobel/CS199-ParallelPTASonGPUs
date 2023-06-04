@@ -243,9 +243,9 @@ if __name__ == "__main__":
     
     tic = time.time()
     
-    BENCHMARK_LENGTH = 3 # length of motif, number of residues
+    BENCHMARK_LENGTH = 9 # length of motif, number of residues
     r = 2 # sample size
-    b = 2.5 # max ball size
+    b = 5 # max ball size
     d = 0
     min_trmsd = sys.maxsize
     transfertime = []
@@ -299,6 +299,6 @@ if __name__ == "__main__":
     print("Program done in {:.4f} seconds".format(toc-tic))
     #print("Total transfer time {:.4f} seconds".format(transfertime))
     #print("Total SVD time {:.4f} seconds".format(svdtime))
-    print(svdtime)
-    print(transfertime)
-    print(molslength)
+    print("SVDTIME: ", svdtime)
+    print("TRANSFERTIME: ", transfertime)
+    print("MOLSLENGTH: ", molslength)
