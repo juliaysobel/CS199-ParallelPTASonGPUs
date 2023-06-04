@@ -243,7 +243,7 @@ if __name__ == "__main__":
     
     tic = time.time()
     
-    BENCHMARK_LENGTH = 9 # length of motif, number of residues
+    BENCHMARK_LENGTH = 8 # length of motif, number of residues
     r = 2 # sample size
     b = 5 # max ball size
     d = 0
