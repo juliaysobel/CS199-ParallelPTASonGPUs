@@ -220,7 +220,7 @@ if __name__ == "__main__":
     tic = time.time()
     
     BENCHMARK_LENGTH = 3
-    r = 2 # sample size
+    r = 3 # sample size
     b = 2.5 # max ball size
     d = 0
     min_trmsd = sys.maxsize
