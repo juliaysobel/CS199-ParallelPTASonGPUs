@@ -219,9 +219,9 @@ if __name__ == "__main__":
     
     tic = time.time()
     
-    BENCHMARK_LENGTH = 9
-    r = 2 # sample size
-    b = 5 # max ball size
+    BENCHMARK_LENGTH = 3
+    r = 3 # sample size
+    b = 2.5 # max ball size
     d = 0
     min_trmsd = sys.maxsize
     svdtime = []
