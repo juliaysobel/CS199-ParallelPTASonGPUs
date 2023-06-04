@@ -219,7 +219,7 @@ if __name__ == "__main__":
     
     tic = time.time()
     
-    BENCHMARK_LENGTH = 5
+    BENCHMARK_LENGTH = 4
     r = 2 # sample size
     b = 2.5 # max ball size
     d = 0
@@ -228,7 +228,7 @@ if __name__ == "__main__":
     molslength = []
 
     # Get all protein structs
-    structs = get_structures("/datasets","/pep_conantokin/")
+    structs = get_structures("/datasets","/pep_conantokin_1/")
 
     # (1) Fix P_1, translate other proteins to make centroids coincide
     fixed_struct = structs[0]
