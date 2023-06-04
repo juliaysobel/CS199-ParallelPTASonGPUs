@@ -243,9 +243,9 @@ if __name__ == "__main__":
     
     tic = time.time()
     
-    BENCHMARK_LENGTH = 10 # length of motif, number of residues
+    BENCHMARK_LENGTH = 7 # length of motif, number of residues
     r = 4 # sample size
-    b = 7 # max ball size
+    b = 6 # max ball size
     d = 0
     min_trmsd = sys.maxsize
     transfertime = []
